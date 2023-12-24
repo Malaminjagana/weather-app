@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+
+
+
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: url('weatherapp.jpg-.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: antiquewhite;
+
+
+          
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: url('scearyweather.jpg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: antiquewhite;
+   
+
+    
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+           
+           
+
+       
+
+        h1, label, button {
+            color: antiquewhite;
+        }
+
+        #weather-info {
+            color: white; /* Set the text color to white */
+        }
+
+        #copyright {
+            color: antiquewhite;
+        }
+    </style>
+</head>
+<body background="scearyweather.jpg.jpg">
+
+    <h1>if you want to know any city weather temperatures, type the city name here</h1>
+    
+    <label for="city">Enter city:</label>
+    <input type="text" id="city" placeholder="Enter city">
+    <button onclick="getWeather()" style="background-color: black; color: white;">Click here</button>
+    
+    <div id="weather-info"></div>
+
+    <div id="weather-info"></div>
+
+    <div id="copyright">
+        <ul class="menu">
+            <li>&copy; Developed by </li><li>Malamin Jagana</li>
+        </ul>
+    </div>
+
+    <script>
+        function getWeather() {
+            var apiKey = '0a1dbaca535bd791623022df86bdc1f3';
+    
+            var city = document.getElementById('city').value;
+
+            if (city === '') {
+                alert('Please enter a city.');
+                return;
+            }
+
+            var apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    displayWeather(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching weather data:', error);
+                    alert('Error fetching weather data. Please try again.');
+                });
+        }
+
+        function displayWeather(data) {
+            var weatherInfo = document.getElementById('weather-info');
+            weatherInfo.innerHTML = '';
+
+            if (data.cod !== 200) {
+                weatherInfo.innerHTML = `<p>${data.message}</p>`;
+                return;
+            }
+
+            var cityName = data.name;
+            var temperature = data.main.temp;
+            var description = data.weather[0].description;
+
+            var weatherHtml = `
+                <h2>${cityName}</h2>
+                <p>Temperature: ${temperature}°C</p>
+                <p>Description: ${description}</p>
+            `;
+
+            weatherInfo.innerHTML = weatherHtml;
+        }
+    </script>
+
+</body>
+</html>
